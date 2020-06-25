@@ -1,0 +1,25 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: qfdmy-apiserver-dashboard
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    gateway:
+      routes:
+        - predicates:
+            # 匹配路径转发，{} 为路径变量
+            # {business}，作为业务变量使用，比如：`/core`
+            # {module} ，作为模块变量使用，比如：`/admin`
+            - Path=/api/dashboard/{business}/{module}/**
+          filters:
+            # 去掉前缀的个数，前缀是 Path 变量的前缀
+            # 比如 `StripPrefix=2` 便会去掉前缀 `/api/dashboard` 重新构建的路径为 `http://localhost:8080/{business}/{module}/**`
+            # 如果不去除前缀，则构建的路径为 `http://localhost:8080/api/dashboard/{business}/{module}/**`
+            - StripPrefix=2
+          uri: "http://localhost:8080"

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfdmy.repository.core.mapper.CorePostMapper">
+    <sql id="postColumns">
+      post.`id`,
+      post.`post_author`,
+      post.`post_content`,
+      post.`post_title`,
+      post.`post_excerpt`,
+      post.`post_status`,
+      post.`comment_status`,
+      post.`post_name`,
+      post.`post_content_filtered`,
+      post.`post_parent`,
+      post.`guid`,
+      post.`menu_order`,
+      post.`post_type`,
+      post.`post_mime_type`,
+      post.`comment_count`,
+      post.`create_time`,
+      post.`update_time`,
+      admin.`username`
+    </sql>
+
+    <sql id="postJoins">
+        LEFT JOIN `core_admin` AS admin ON post.`post_author` = admin.`id`
+    </sql>
+
+    <select id="listByQuery" resultType="com.qfdmy.repository.core.dto.CorePostDTO">
+        SELECT
+        <include refid="postColumns"/>
+        FROM `core_post` AS post
+        <include refid="postJoins"/>
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

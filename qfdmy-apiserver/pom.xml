@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.qfdmy</groupId>
+        <artifactId>qfdmy-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>qfdmy-apiserver</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <url>http://www.qfdmy.com</url>
+    <inceptionYear>2020-Now</inceptionYear>
+    <description>开放接口网关层-管理后台</description>
+
+    <scm>
+        <connection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-apiserver.git</connection>
+        <developerConnection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-apiserver.git</developerConnection>
+        <url>http://gitlab.funtl.com/qfdmy/qfdmy-apiserver</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>liwemin</id>
+            <name>Lusifer Lee</name>
+            <email>lee.lusifer@gmail.com</email>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>qfdmy-apiserver-dashboard</module>
+    </modules>
+
+    <dependencies>
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

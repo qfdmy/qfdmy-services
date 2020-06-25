@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.qfdmy</groupId>
+    <artifactId>qfdmy-dependencies</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <url>http://www.qfdmy.com</url>
+    <inceptionYear>2020-Now</inceptionYear>
+    <description>通用依赖-Dependencies</description>
+
+    <!-- 软件配置管理：配合 maven-release-plugin 插件使用 -->
+    <scm>
+        <connection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-dependencies.git</connection>
+        <developerConnection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-dependencies.git</developerConnection>
+        <url>http://gitlab.funtl.com/qfdmy/qfdmy-dependencies</url>
+        <tag>1.0.0.RELEASE</tag>
+    </scm>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Spring Projects -->
+        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <spring-cloud-alibaba.verion>2.2.1.RELEASE</spring-cloud-alibaba.verion>
+
+        <!-- Cloud Service -->
+        <qiniu.version>7.2.29</qiniu.version>
+
+        <!-- Tools -->
+        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <hutool.version>5.3.5</hutool.version>
+
+        <!-- Projects -->
+        <qfdmy.version>1.0.0-SNAPSHOT</qfdmy.version>
+        <qfdmy.development.version>1.0.0-SNAPSHOT</qfdmy.development.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>liwemin</id>
+            <name>Lusifer Lee</name>
+            <email>lee.lusifer@gmail.com</email>
+        </developer>
+    </developers>
+
+    <!-- 发布项目到 Nexus -->
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://nexus.funtl.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://nexus.funtl.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.verion}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- MyBatisPlus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- HuTool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- 七牛云 -->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- 用于自动发布 RELEASE TAG -->
+                <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+                <!-- 配合 maven-release-plugin 插件发布到 Git（GitLab，GitHub 等） -->
+                <maven-scm-provider-jgit-plugin.version>1.9.5</maven-scm-provider-jgit-plugin.version>
+                <!-- Spring 提供的代码美化插件 -->
+                <spring-javaformat-maven-plugin.version>0.0.22</spring-javaformat-maven-plugin.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <version>${spring-javaformat-maven-plugin.version}</version>
+                    </plugin>
+
+                    <!-- mvn scm -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>${maven-release-plugin.version}</version>
+                        <configuration>
+                            <providerImplementations>
+                                <git>jgit</git>
+                            </providerImplementations>
+                            <username>root</username>
+                            <password>12345678</password>
+                            <tagBase>${project.artifactId}-${project.version}</tagBase>
+                            <goals>-f pom.xml deploy</goals>
+                            <releaseLabel>${qfdmy.version}</releaseLabel>
+                            <releaseVersion>${qfdmy.version}</releaseVersion>
+                            <developmentVersion>${qfdmy.development.version}</developmentVersion>
+                            <preparationGoals>clean verify</preparationGoals>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.maven.scm</groupId>
+                                <artifactId>maven-scm-provider-jgit</artifactId>
+                                <version>${maven-scm-provider-jgit-plugin.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

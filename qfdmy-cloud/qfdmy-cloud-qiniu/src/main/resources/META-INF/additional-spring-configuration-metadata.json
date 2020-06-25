@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "qfdmy.cloud.qiniu.cdn",
+      "defaultValue": "",
+      "description": "七牛云配置的 CDN 地址."
+    },
+    {
+      "name": "qfdmy.cloud.qiniu.accessKey",
+      "defaultValue": "",
+      "description": "七牛云 AccessKey."
+    },
+    {
+      "name": "qfdmy.cloud.qiniu.secretKey",
+      "defaultValue": "",
+      "description": "七牛云 SecretKey."
+    },
+    {
+      "name": "qfdmy.cloud.qiniu.storage.bucketName",
+      "defaultValue": "",
+      "description": "七牛云配置的 Bucket."
+    }
+  ]
+}

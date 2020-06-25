@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: qfdmy-cloud-qiniu
+  main:
+    allow-bean-definition-overriding: true

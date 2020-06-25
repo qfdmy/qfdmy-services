@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+    </parent>
+
+    <groupId>com.qfdmy</groupId>
+    <artifactId>qfdmy-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <url>http://www.qfdmy.com</url>
+    <inceptionYear>2020-Now</inceptionYear>
+    <description>通用依赖-Parent</description>
+
+    <scm>
+        <connection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-parent.git</connection>
+        <developerConnection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-parent.git</developerConnection>
+        <url>http://gitlab.funtl.com/qfdmy/qfdmy-parent</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Projects -->
+        <qfdmy.version>1.0.0-SNAPSHOT</qfdmy.version>
+        <qfdmy.development.version>1.0.0-SNAPSHOT</qfdmy.development.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>liwemin</id>
+            <name>Lusifer Lee</name>
+            <email>lee.lusifer@gmail.com</email>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://nexus.funtl.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://nexus.funtl.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.qfdmy</groupId>
+                <artifactId>qfdmy-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+                <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
+                <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+                <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+                <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+                <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+                <maven-scm-provider-jgit-plugin.version>1.9.5</maven-scm-provider-jgit-plugin.version>
+                <spring-javaformat-maven-plugin.version>0.0.22</spring-javaformat-maven-plugin.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <version>${spring-javaformat-maven-plugin.version}</version>
+                    </plugin>
+
+                    <!-- mvn clean -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>${maven-clean-plugin.version}</version>
+                        <configuration>
+                            <filesets>
+                                <!-- 清理 JRebel 产生的备份文件 -->
+                                <fileset>
+                                    <directory>${basedir}/**</directory>
+                                    <includes>
+                                        <include>.rebel.xml.bak</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- mvn install -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <version>${maven-install-plugin.version}</version>
+                    </plugin>
+
+                    <!-- JavaDoc 生成插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven-javadoc-plugin.version}</version>
+                        <configuration>
+                            <!-- 生成 HTML 后 title 的名字 -->
+                            <windowtitle>千锋达摩院 ${project.version} JavaDocs</windowtitle>
+                            <!--
+                                解决控制台乱码问题
+                                需要在【环境变量】中添加【系统变量】
+                                - 变量名：JAVA_TOOL_OPTIONS
+                                - 变量值：-Dfile.encoding=UTF-8
+                             -->
+                            <charset>UTF8</charset>
+                            <encoding>UTF8</encoding>
+                            <docencoding>UTF8</docencoding>
+                            <!--
+                                生成 JavaDoc 所在目录：reportOutputDirectory/destDir
+                                - reportOutputDirectory：输出的目录位置
+                                - destDir：文档生成的目录位置
+                             -->
+                            <destDir>javadocs</destDir>
+                            <reportOutputDirectory>${basedir}/docs</reportOutputDirectory>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 测试用例插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin.version}</version>
+                        <configuration>
+                            <!-- 设置默认跳过测试 -->
+                            <skip>true</skip>
+                            <includes>
+                                <include>**/*Tests.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/Abstract*.java</exclude>
+                            </excludes>
+                            <systemPropertyVariables>
+                                <java.security.egd>file:/dev/./urandom</java.security.egd>
+                                <java.awt.headless>true</java.awt.headless>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+
+                    <!--
+                        依赖冲突检查
+                        在进行 mvn clean package 的时候，会在 console 中打印出冲突的 jar 版本和其父 pom
+                     -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>${maven-enforcer-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>enforce-rules</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <bannedDependencies>
+                                            <excludes>
+                                                <exclude>commons-logging:*:*</exclude>
+                                            </excludes>
+                                            <searchTransitive>true</searchTransitive>
+                                        </bannedDependencies>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- mvn scm -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>${maven-release-plugin.version}</version>
+                        <configuration>
+                            <providerImplementations>
+                                <git>jgit</git>
+                            </providerImplementations>
+                            <username>root</username>
+                            <password>12345678</password>
+                            <tagBase>${project.artifactId}-${project.version}</tagBase>
+                            <goals>-f pom.xml deploy</goals>
+                            <releaseLabel>${qfdmy.version}</releaseLabel>
+                            <releaseVersion>${qfdmy.version}</releaseVersion>
+                            <developmentVersion>${qfdmy.development.version}</developmentVersion>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.maven.scm</groupId>
+                                <artifactId>maven-scm-provider-jgit</artifactId>
+                                <version>${maven-scm-provider-jgit-plugin.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

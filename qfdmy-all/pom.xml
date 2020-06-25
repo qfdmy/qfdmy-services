@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.qfdmy</groupId>
+        <artifactId>qfdmy-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>qfdmy-all</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <url>http://www.qfdmy.com</url>
+    <inceptionYear>2020-Now</inceptionYear>
+    <description>单体应用打包器</description>
+
+    <scm>
+        <connection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-all.git</connection>
+        <developerConnection>scm:git:http://gitlab.funtl.com/qfdmy/qfdmy-all.git</developerConnection>
+        <url>http://gitlab.funtl.com/qfdmy/qfdmy-all</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>liwemin</id>
+            <name>Lusifer Lee</name>
+            <email>lee.lusifer@gmail.com</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>qfdmy-oauth</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>qfdmy-controller-dashboard</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.qfdmy.all.AllApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
